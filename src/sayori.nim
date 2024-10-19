@@ -7,13 +7,12 @@ import initcontest
 import runner
 
 when isMainModule:
-  let args = paramCount()
-  if args < 1:
+  let args = commandLineParams()
+  if args.len < 1:
     echo "Usage: sayori <command> [args]"
     quit(1)
 
-  let command = paramStr(1)
-  case command
+  case args[0]
   of "init", "ini" :
     initContest(args)
   
@@ -24,6 +23,6 @@ when isMainModule:
     run(args)
   
   else:
-    echo "Unknown command: " & command
+    echo "Unknown command: " & args[0]
     quit(1)
 

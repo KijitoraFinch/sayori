@@ -1,16 +1,14 @@
 import os, strutils
 
-proc preproc*(args: int) = 
-
-    if args < 2:
+proc preproc*(args: seq[string]) = 
+    let argCount = args.len
+    if argCount < 2:
       echo "Usage: sayori preproc <file>"
       quit(1)
-    let filename = paramStr(2)
+    let filename = args[1]
     
     # open file
     block:
-
-      let includes = os.getEnv("SAYORI_INCLUDES").split(",")
 
       var f = open(filename, FileMode.fmRead)
       if f == nil:
@@ -24,7 +22,6 @@ proc preproc*(args: int) =
         let splitLine = l.split(" ")
         if  splitLine.len >= 2 and splitLine[0] == "include":
           
-          if includes.contains(splitLine[1]):
             block:
               let required = open(splitLine[1], FileMode.fmRead)
               defer:
